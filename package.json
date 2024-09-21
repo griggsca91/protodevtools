@@ -11,6 +11,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "buffer": "^6.0.3",
+    "jsbi": "^4.3.0",
     "pretty-print-json": "^3.0.2",
     "protobufjs": "^7.4.0"
   },

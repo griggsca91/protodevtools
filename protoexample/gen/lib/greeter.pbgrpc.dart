@@ -25,6 +25,10 @@ class GreeterClient extends $grpc.Client {
       '/greeter.Greeter/SayHello',
       ($0.HelloRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.HelloReply.fromBuffer(value));
+  static final _$sendComplexObject = $grpc.ClientMethod<$0.ComplexObjectRequest, $0.ComplexObjectResponse>(
+      '/greeter.Greeter/SendComplexObject',
+      ($0.ComplexObjectRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.ComplexObjectResponse.fromBuffer(value));
 
   GreeterClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -34,6 +38,10 @@ class GreeterClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$0.HelloReply> sayHello($0.HelloRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$sayHello, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ComplexObjectResponse> sendComplexObject($0.ComplexObjectRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$sendComplexObject, request, options: options);
   }
 }
 
@@ -49,11 +57,23 @@ abstract class GreeterServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.HelloRequest.fromBuffer(value),
         ($0.HelloReply value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ComplexObjectRequest, $0.ComplexObjectResponse>(
+        'SendComplexObject',
+        sendComplexObject_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.ComplexObjectRequest.fromBuffer(value),
+        ($0.ComplexObjectResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.HelloReply> sayHello_Pre($grpc.ServiceCall call, $async.Future<$0.HelloRequest> request) async {
     return sayHello(call, await request);
   }
 
+  $async.Future<$0.ComplexObjectResponse> sendComplexObject_Pre($grpc.ServiceCall call, $async.Future<$0.ComplexObjectRequest> request) async {
+    return sendComplexObject(call, await request);
+  }
+
   $async.Future<$0.HelloReply> sayHello($grpc.ServiceCall call, $0.HelloRequest request);
+  $async.Future<$0.ComplexObjectResponse> sendComplexObject($grpc.ServiceCall call, $0.ComplexObjectRequest request);
 }

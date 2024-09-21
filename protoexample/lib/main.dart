@@ -12,7 +12,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final channel = GrpcWebClientChannel.xhr(Uri.parse('http://localhost:50051'));
+  final channel = GrpcWebClientChannel.xhr(Uri.parse('http://localhost:8080'));
 
   String _response = 'Press the button to make a network request';
   void _makeRequest() async {

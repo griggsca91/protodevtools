@@ -1,11 +1,13 @@
 syntax = "proto3";
 
 package greeter;
+option go_package = "github.com/griggsca91/protodevtools/protoexample/gen/go;greetv1";
 
 // The greeting service definition.
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply);
+  rpc SendComplexObject (ComplexObjectRequest) returns (ComplexObjectResponse);
 }
 
 // The request message containing the user's name.
@@ -16,5 +18,46 @@ message HelloRequest {
 // The response message containing the greetings.
 message HelloReply {
   string message = 1;
+  ComplexObjectResponse response = 2;
 }
 
+message ComplexObjectRequest {
+
+}
+message ComplexObjectResponse {
+  string string_value = 1;
+  repeated string repeated_string_value = 2;
+  int32 int_value = 3;
+  bool bool_value = 4;
+  optional bool optional_bool_value = 5;
+  float float_value = 6;
+  Corpus enum_value = 7;
+
+  enum Corpus {
+    CORPUS_UNSPECIFIED = 0;
+    CORPUS_UNIVERSAL = 1;
+    CORPUS_WEB = 2;
+    CORPUS_IMAGES = 3;
+    CORPUS_LOCAL = 4;
+    CORPUS_NEWS = 5;
+    CORPUS_PRODUCTS = 6;
+    CORPUS_VIDEO = 7;
+  }
+  
+  repeated Result repeated_message_value = 8;
+
+  oneof oneof_value {
+    string name = 9;
+    Result sub_message = 10;
+  }
+
+  map<string, Result> map_value = 11; 
+
+
+}
+
+message Result {
+  string url = 1;
+  string title = 2;
+  repeated string snippets = 3;
+}

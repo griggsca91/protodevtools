@@ -11,6 +11,11 @@ export default defineConfig({
     }),
   ],
   build: {
+    minify: false,
+    terserOptions: {
+      mangle: false,
+    },
+    sourcemap: true,
     rollupOptions: {
       input: {
         background: resolve(__dirname, 'src/background.js'),
