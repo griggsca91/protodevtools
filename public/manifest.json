@@ -4,18 +4,8 @@
   "version": "1.0",
   "description": "A Chrome extension built with Vite.",
   "permissions": [
-
     "scripting", "activeTab",
     "webRequest"
   ],
-    "devtools_page":"public/popup.html",
-  "background": {
-    "service_worker": "src/background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["src/content_script.js"]
-    }
-  ]
+    "devtools_page":"devtools_page.html" 
 }
