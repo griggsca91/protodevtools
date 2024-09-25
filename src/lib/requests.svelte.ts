@@ -208,35 +208,55 @@ export function interpretAsTwosComplement(n: any, bits: any) {
     }
 }
 
-let requests: string[] = $state([]);
+let requests: Request[] = $state([]);
 
-chrome.devtools.network.onRequestFinished.addListener((request: any) => {
-    if (!request.request.url.includes('localhost:8080')) {
-        return
-    }
-    console.log("request", request)
-    if (request.request.method == "POST") {
+if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
+
+    chrome.devtools.network.onRequestFinished.addListener((request: any) => {
+        console.log(request)
         console.log("request", request.request.postData.text, request.request.postData.text.length)
         const reader = Buffer.from(request.request.postData.text);
-        const parsedResponse = decodeProto(reader)
+        const parsedResponse = recurse({}, decodeProto(reader))
         console.log("parsed response", parsedResponse)
-        const html = prettyPrintJson.toHtml(parsedResponse)
-        requests.push(JSON.stringify(parsedResponse, null, "\t"))
-    }
-    request.getContent((body: any) => {
-        console.log("request", request.request.url)
-        console.log("string body", body)
-        const parsedResponse = decodeProto(Buffer.from(body, "base64"))
-        console.log("parsed response", parsedResponse)
-        const recursed = recurse({}, parsedResponse)
-        console.log("recursed", recursed)
-        console.dir(recursed, { depth: null });
+        let r: Request = {
+            requestTime: new Date(),
+            data: parsedResponse,
+            url: request.request.url,
+            method: 'POST',
+        }
+        request.getContent((body: any) => {
+            console.log("request", request.request.url)
+            console.log("string body", body)
+            const parsedResponse = decodeProto(Buffer.from(body, "base64"))
+            console.log("parsed response", parsedResponse)
+            const recursed = recurse({}, parsedResponse)
+            console.log("recursed", recursed)
+            console.dir(recursed, { depth: null });
 
-        const html = prettyPrintJson.toHtml(recursed)
-        requests.push(JSON.stringify(recursed, null, "\t"))    });
-});
+            r.response = {
+                data: recursed
+            }
+            requests.push(r)
+        });
+    });
+}
 
+type Response = {
+    data: any
+}
+
+
+type Request = {
+    requestTime: Date
+    data: any
+    url: string
+    method: "POST" | "GET"
+    response?: Response
+}
 
 export default {
     get requests() { return requests },
+    addRequest(r: Request) {
+        requests.push(r)
+    }
 }
