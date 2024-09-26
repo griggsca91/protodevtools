@@ -13,6 +13,7 @@
 </script>
 
 {#if isOpen}
+{console.log(request)}
     <div
         out:slide={{
             axis: "x",

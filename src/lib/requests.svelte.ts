@@ -218,7 +218,9 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
             return
         }
         console.log(request.url, request)
-        console.log("reqeust base64 encoded text", base64Encode(request.request.postData.text))
+        const rawData = base64Encode(request.request.postData.text);
+        const text = request.request.postData.text
+        console.log("reqeust base64 encoded text", rawData)
         const reader = Buffer.from(request.request.postData.text);
         console.log(reader.buffer)
         const parsedResponse = recurse({}, decodeProto(reader))
@@ -226,6 +228,8 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
         let r: Request = {
             requestTime: new Date(),
             data: parsedResponse,
+            rawData,
+            text,
             url: request.request.url,
             method: 'POST',
         }
@@ -235,7 +239,8 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
             const recursed = recurse({}, parsedResponse)
             console.dir(recursed, { depth: null });
             r.response = {
-                data: recursed
+                data: recursed,
+                rawData: body
             }
             requests.push(r)
         });
@@ -244,12 +249,15 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
 
 type Response = {
     data: any
+    rawData: any
 }
 
 
 export type Request = {
     requestTime: Date
     data: any
+    rawData?: any
+    text: string
     url: string
     method: "POST" | "GET"
     response?: Response
