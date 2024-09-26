@@ -1,7 +1,14 @@
-<script>
+<script lang="ts">
     import "./app.css";
-    import requests from "./lib/requests.svelte";
+    import requests, { type Request } from "./lib/requests.svelte";
     import { JsonView } from "@zerodevx/svelte-json-view";
+    import Panel from "./lib/Panel.svelte";
+    let selectedRequest: Request | null = $state(null);
+
+    let openPanel = $state(false);
+    function toggle() {
+        openPanel = !openPanel;
+    }
 
     function addRequest() {
         requests.addRequest({
@@ -144,12 +151,20 @@
     }
 </script>
 
-<div>Hello World</div>
 <button onclick={addRequest}>Add Request</button>
 
 <div class="container flex-row">
     {#each requests.requests as r}
-        <div class="flex flex-column">
+        <!-- svelte-ignore a11y_click_events_have_key_events -->
+        <!-- svelte-ignore a11y_no_static_element_interactions -->
+        <div
+            class="flex flex-column"
+            onclick={(e) => {
+                selectedRequest = r;
+                openPanel = true;
+                e.stopPropagation();
+            }}
+        >
             <div class="basis-1/4 flex-row">
                 <div class="basis-1/2">
                     {r.url}
@@ -157,14 +172,9 @@
                 <div class="text-xs basis-1/2">
                     {r.requestTime}
                 </div>
-
-            </div>
-            <div class="basis-1/2">
-                <JsonView json={r.data} />
-            </div>
-            <div class="basis-1/2">
-                <JsonView json={r.response?.data} />
             </div>
         </div>
     {/each}
 </div>
+
+<Panel closePanel={() => openPanel = false} request={selectedRequest} isOpen={openPanel} />

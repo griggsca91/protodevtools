@@ -4,9 +4,7 @@ import JSBI from "jsbi";
 import { BufferReader } from "./BufferReader"; // Adjust the path as necessary
 
 function recurse(obj: any, parsedData: any) {
-    console.log("recurse", parsedData)
     for (let p of parsedData.parts) {
-        console.log("p", p)
         switch (p.type) {
             case 0:
                 obj[p.index] = decodeVarintParts(p.value)
@@ -15,7 +13,6 @@ function recurse(obj: any, parsedData: any) {
                 obj[p.index] = decodeFixed64(p.value)
                 break;
             case 2:
-                console.log("case 2", p)
                 let decoded = decodeProto(p.value)
                 if (p.value.length > 0 && decoded.leftOver.length === 0) {
                     obj[p.index] = {}
@@ -33,7 +30,6 @@ function recurse(obj: any, parsedData: any) {
 
     if (parsedData.leftOver.length > 0) {
         const p = decodeProto(parsedData.leftOver)
-        console.log("decoded p", p)
         if (p.parts.length > 0) {
             recurse(obj, p)
         }
@@ -210,14 +206,23 @@ export function interpretAsTwosComplement(n: any, bits: any) {
 
 let requests: Request[] = $state([]);
 
+function base64Encode(input: string): string {
+    return Buffer.from(input).toString('base64');
+}
+
 if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
 
     chrome.devtools.network.onRequestFinished.addListener((request: any) => {
-        console.log(request)
-        console.log("request", request.request.postData.text, request.request.postData.text.length)
+        console.log("request", request)
+        if (request.request.method != "POST") {
+            return
+        }
+        console.log(request.url, request)
+        console.log("reqeust base64 encoded text", base64Encode(request.request.postData.text))
         const reader = Buffer.from(request.request.postData.text);
+        console.log(reader.buffer)
         const parsedResponse = recurse({}, decodeProto(reader))
-        console.log("parsed response", parsedResponse)
+        console.log("request parsed response", parsedResponse)
         let r: Request = {
             requestTime: new Date(),
             data: parsedResponse,
@@ -225,14 +230,10 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
             method: 'POST',
         }
         request.getContent((body: any) => {
-            console.log("request", request.request.url)
-            console.log("string body", body)
+            console.log("response body", body)
             const parsedResponse = decodeProto(Buffer.from(body, "base64"))
-            console.log("parsed response", parsedResponse)
             const recursed = recurse({}, parsedResponse)
-            console.log("recursed", recursed)
             console.dir(recursed, { depth: null });
-
             r.response = {
                 data: recursed
             }
@@ -246,7 +247,7 @@ type Response = {
 }
 
 
-type Request = {
+export type Request = {
     requestTime: Date
     data: any
     url: string
