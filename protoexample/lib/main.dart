@@ -16,16 +16,7 @@ class MyApp extends StatelessWidget {
 
   String _response = 'Press the button to make a network request';
   void _makeRequest() async {
-    final response = await http
-        .get(Uri.parse('https://jsonplaceholder.typicode.com/todos/1'));
-
-    if (response.statusCode == 200) {
-      // If server returns an OK response, parse the JSON
-      final data = json.decode(response.body);
-      print(response.body);
-    } else {
-      // If that response was not OK, display an error
-    }
+    _sayHello();
   }
 
   @override

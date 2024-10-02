@@ -5,4 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [svelte(), tailwindcss()],
+  build: {
+    sourcemap: true,
+  }
 });

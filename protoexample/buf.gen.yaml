@@ -13,5 +13,9 @@ plugins:
   - local: protoc-gen-connect-go
     out: gen/go
     opt: paths=source_relative
+  - local: protoc-gen-es
+    opt: target=ts
+    out: gen/ts 
+
 inputs:
   - directory: protos

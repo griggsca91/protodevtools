@@ -2,6 +2,17 @@ import { prettyPrintJson } from 'pretty-print-json';
 import { Buffer } from 'buffer'
 import JSBI from "jsbi";
 import { BufferReader } from "./BufferReader"; // Adjust the path as necessary
+import { base64Decode } from "@bufbuild/protobuf/wire";
+import { FileDescriptorSetSchema } from "@bufbuild/protobuf/wkt";
+import {
+    fromBinary,
+    createFileRegistry,
+    type DescMessage,
+    create,
+    mergeFromBinary,
+    type FileRegistry
+} from "@bufbuild/protobuf";
+import { Humanize, humanizeResponse } from './BufImage';
 
 function recurse(obj: any, parsedData: any) {
     for (let p of parsedData.parts) {
@@ -217,30 +228,47 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
         if (request.request.method != "POST") {
             return
         }
-        console.log(request.url, request)
+
+        let data: any
         const rawData = base64Encode(request.request.postData.text);
         const text = request.request.postData.text
-        console.log("reqeust base64 encoded text", rawData)
-        const reader = Buffer.from(request.request.postData.text);
-        console.log(reader.buffer)
-        const parsedResponse = recurse({}, decodeProto(reader))
-        console.log("request parsed response", parsedResponse)
+        if (selectedRegistry) {
+            const buffer = Buffer.from(text)
+            data = humanizeResponse(selectedRegistry, new Uint8Array(buffer.buffer.slice(5, buffer[4]+5)), request.request.url)
+        } else {
+            console.log(request.url, request)
+            console.log("reqeust base64 encoded text", rawData)
+            const reader = Buffer.from(request.request.postData.text);
+            console.log(reader.buffer)
+            data = recurse({}, decodeProto(reader))
+            console.log("request parsed response", data)
+
+        }
         let r: Request = {
             requestTime: new Date(),
-            data: parsedResponse,
+            data,
             rawData,
             text,
             url: request.request.url,
             method: 'POST',
         }
         request.getContent((body: any) => {
-            console.log("response body", body)
-            const parsedResponse = decodeProto(Buffer.from(body, "base64"))
-            const recursed = recurse({}, parsedResponse)
-            console.dir(recursed, { depth: null });
-            r.response = {
-                data: recursed,
-                rawData: body
+            console.log("response body", body, r.url)
+            if (selectedRegistry) {
+
+                const b = base64Decode(body)
+                 r.response = {
+                    rawData: body,
+                    data: humanizeResponse(selectedRegistry, b.slice(5, b[4]+5), r.url)
+                }
+            } else {
+                const parsedResponse = decodeProto(Buffer.from(body, "base64"))
+                const recursed = recurse({}, parsedResponse)
+                console.dir(recursed, { depth: null });
+                r.response = {
+                    data: recursed,
+                    rawData: body
+                }
             }
             requests.push(r)
         });
@@ -263,9 +291,24 @@ export type Request = {
     response?: Response
 }
 
+let selectedRegistry: FileRegistry | null = $state(null)
+
 export default {
     get requests() { return requests },
     addRequest(r: Request) {
         requests.push(r)
+    },
+    setFileRegistry(a: Uint8Array) {
+        // let decodedResponse = base64Decode(a)
+        // console.log(decodedResponse)
+        const fileDescriptorSet = fromBinary(
+            FileDescriptorSetSchema,
+            a,
+        );
+        // Create a FileRegistry from the google.protobuf.FileDescriptorSet message:
+        const registry = createFileRegistry(fileDescriptorSet);
+        selectedRegistry = registry;
+
+        console.log(registry)
     }
 }
