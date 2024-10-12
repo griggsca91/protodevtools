@@ -1,18 +1,9 @@
-import { prettyPrintJson } from 'pretty-print-json';
 import { Buffer } from 'buffer'
 import JSBI from "jsbi";
 import { BufferReader } from "./BufferReader"; // Adjust the path as necessary
 import { base64Decode } from "@bufbuild/protobuf/wire";
-import { FileDescriptorSetSchema } from "@bufbuild/protobuf/wkt";
-import {
-  fromBinary,
-  createFileRegistry,
-  type DescMessage,
-  create,
-  mergeFromBinary,
-  type FileRegistry
-} from "@bufbuild/protobuf";
-import { Humanize, humanizeResponse, humanizeRequest } from './BufImage';
+import { humanizeResponse, humanizeRequest } from './BufImage';
+import fileRegistry from "./fileRegistry.svelte"
 
 function recurse(obj: any, parsedData: any) {
   for (let p of parsedData.parts) {
@@ -232,9 +223,9 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
     let data: any
     const rawData = base64Encode(request.request.postData.text);
     const text = request.request.postData.text
-    if (selectedRegistry) {
+    if (fileRegistry.activeFileRegistry) {
       const buffer = Buffer.from(text)
-      data = humanizeRequest(selectedRegistry, buffer, request.request.url)
+      data = humanizeRequest(fileRegistry.activeFileRegistry.fileRegistry, buffer, request.request.url)
     } else {
       console.log(request.url, request)
       console.log("reqeust base64 encoded text", rawData)
@@ -254,12 +245,12 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
     }
     request.getContent((body: any) => {
       console.log("response body", body, r.url)
-      if (selectedRegistry) {
+      if (fileRegistry.activeFileRegistry) {
 
         const b = Buffer.from(base64Decode(body))
         r.response = {
           rawData: body,
-          data: humanizeResponse(selectedRegistry, b, r.url)
+          data: humanizeResponse(fileRegistry.activeFileRegistry.fileRegistry, b, r.url)
         }
       } else {
         const parsedResponse = decodeProto(Buffer.from(body, "base64"))
@@ -291,24 +282,9 @@ export type Request = {
   response?: Response
 }
 
-let selectedRegistry: FileRegistry | null = $state(null)
-
 export default {
   get requests() { return requests },
   addRequest(r: Request) {
     requests.push(r)
   },
-  setFileRegistry(a: Uint8Array) {
-    // let decodedResponse = base64Decode(a)
-    // console.log(decodedResponse)
-    const fileDescriptorSet = fromBinary(
-      FileDescriptorSetSchema,
-      a,
-    );
-    // Create a FileRegistry from the google.protobuf.FileDescriptorSet message:
-    const registry = createFileRegistry(fileDescriptorSet);
-    selectedRegistry = registry;
-
-    console.log(registry)
-  }
 }

@@ -11,20 +11,36 @@ void main() {
   runApp(MyApp());
 }
 
+void sayHelloJSON() async {
+  final url = Uri.parse('http://localhost:8080/greeter.Greeter/SayHello');
+  final headers = {
+    'Content-Type': 'application/json',
+  };
+  final body = jsonEncode({'name': 'name'});
+
+  final response = await http.post(url, headers: headers, body: body);
+
+  if (response.statusCode == 200) {
+    print('Response data: ${response.body}');
+  } else {
+    print('Request failed with status: ${response.statusCode}');
+  }
+}
+
 class MyApp extends StatelessWidget {
   final channel = GrpcWebClientChannel.xhr(Uri.parse('http://localhost:8080'));
 
   String _response = 'Press the button to make a network request';
-  void _makeRequest() async {
+  void _makeProtoRequest() async {
     _sayHello();
+  }
+
+  void _makeJSONRequest() async {
+    sayHelloJSON();
   }
 
   @override
   Widget build(BuildContext context) {
-    var example = HelloRequest(name: "name");
-    for (final i in example.writeToBuffer()) {
-      print(sprintf("%#04x ", [i]));
-    }
     return MaterialApp(
         title: 'gRPC Flutter Web Client',
         home: Scaffold(
@@ -33,29 +49,18 @@ class MyApp extends StatelessWidget {
           ),
           body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             ElevatedButton(
-              onPressed: _makeRequest,
-              child: Text('Make Network Request'),
+              onPressed: _makeProtoRequest,
+              child: Text('Make Proto Network Request'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _makeJSONRequest,
+              child: Text('Make JSON Network Request'),
             ),
             SizedBox(height: 20),
             Text(
               _response,
               textAlign: TextAlign.center,
-            ),
-            Center(
-              child: FutureBuilder<HelloReply>(
-                future: _sayHello(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text('Connecting to server...');
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (snapshot.hasData) {
-                    return Text(snapshot.data!.message);
-                  } else {
-                    return Text('No data received');
-                  }
-                },
-              ),
             ),
           ]),
         ));
