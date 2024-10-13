@@ -1,0 +1,93 @@
+{
+  "$typeName": "greeter.HelloReply",
+  "message": "Hello, World!",
+  "response": {
+    "$typeName": "greeter.ComplexObjectResponse",
+    "stringValue": "string",
+    "repeatedStringValue": [
+      "hello",
+      "world",
+      "hello",
+      "world",
+      "hello",
+      "mars",
+      "bye",
+      "felicia"
+    ],
+    "intValue": 42,
+    "boolValue": true,
+    "floatValue": 3.140000104904175,
+    "enumValue": 4,
+    "repeatedMessageValue": [
+      {
+        "$typeName": "greeter.Result",
+        "url": "url",
+        "title": "title",
+        "snippets": [
+          "snippet 1",
+          "snippet 2"
+        ]
+      },
+      {
+        "$typeName": "greeter.Result",
+        "url": "url",
+        "title": "title",
+        "snippets": [
+          "snippet 1",
+          "snippet 2"
+        ]
+      },
+      {
+        "$typeName": "greeter.Result",
+        "url": "url",
+        "title": "title",
+        "snippets": [
+          "snippet 1",
+          "snippet 2"
+        ]
+      },
+      {
+        "$typeName": "greeter.Result",
+        "url": "url",
+        "title": "title",
+        "snippets": [
+          "snippet 1",
+          "snippet 2"
+        ]
+      },
+      {
+        "$typeName": "greeter.Result",
+        "url": "url",
+        "title": "title",
+        "snippets": [
+          "snippet 1",
+          "snippet 2"
+        ]
+      }
+    ],
+    "oneofValue": {
+      "case": "subMessage",
+      "value": {
+        "$typeName": "greeter.Result",
+        "url": "url",
+        "title": "title",
+        "snippets": [
+          "snippet 1",
+          "snippet 2"
+        ]
+      }
+    },
+    "mapValue": {
+      "key": {
+        "$typeName": "greeter.Result",
+        "url": "url",
+        "title": "title",
+        "snippets": [
+          "snippet 1",
+          "snippet 2"
+        ]
+      }
+    },
+    "optionalBoolValue": true
+  }
+}
