@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 
@@ -94,16 +93,17 @@ func (s *GreetServer) SayHello(
 		},
 	}
 	res := connect.NewResponse(reply)
+	return res, nil
 
-	res.Header().Set("Greet-Version", "v1")
-	res.Trailer().Add("Trailer", "TrailerValue")
-	connectErr := connect.NewError(connect.CodeInternal, errors.New("dohhh"))
-	deets, err := connect.NewErrorDetail(reply)
-	if err != nil {
-		return nil, err
-	}
-	connectErr.AddDetail(deets)
-	return nil, connectErr
+	// res.Header().Set("Greet-Version", "v1")
+	// res.Trailer().Add("Trailer", "TrailerValue")
+	// connectErr := connect.NewError(connect.CodeInternal, errors.New("dohhh"))
+	// deets, err := connect.NewErrorDetail(reply)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// connectErr.AddDetail(deets)
+	// return nil, connectErr
 }
 
 func main() {

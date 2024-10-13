@@ -4,6 +4,8 @@ import { BufferReader } from "./BufferReader"; // Adjust the path as necessary
 import { base64Decode } from "@bufbuild/protobuf/wire";
 import { humanizeResponse, humanizeRequest } from './BufImage';
 import fileRegistry from "./fileRegistry.svelte"
+import requestJSON from "./testfiles/localdev/request.json"
+import responseJSON from "./testfiles/localdev/response.json"
 
 function recurse(obj: any, parsedData: any) {
   for (let p of parsedData.parts) {
@@ -213,7 +215,6 @@ function base64Encode(input: string): string {
 }
 
 if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
-
   chrome.devtools.network.onRequestFinished.addListener((request: any) => {
     console.log("request", request)
     if (request.request.method != "POST") {
@@ -264,6 +265,20 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
       requests.push(r)
     });
   });
+} else {
+  // this is not an extension right now, so add fake data
+
+  requests.push({
+    requestTime: new Date(),
+    data: requestJSON,
+    text: '',
+    url: 'http://localhost:8080/greeter.Greeter/SayHello',
+    method: 'POST',
+    response: {
+      data: responseJSON,
+      rawData: ''
+    }
+  })
 }
 
 type Response = {
