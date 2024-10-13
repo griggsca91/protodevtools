@@ -32,6 +32,7 @@
         }}
         class="fixed top-0 right-0 w-1/2
             h-full transform
+            bg-gray-50
             transition-transform
             overflow-auto
             "
