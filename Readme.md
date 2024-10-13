@@ -36,3 +36,14 @@ Example of a protobuf message being decoded with a Buf Image
 [ ] Support compressed messages
 [ ] Upload to chrome store
 [ ] Add proper testing
+[ ] Support errors returned - <https://connectrpc.com/docs/go/errors#error-details>
+
+## Tips
+
+### Creating a Buf Image
+
+Run `buf build --exclude-source-info -o image.pbin` in the directory with your buf
+
+### Creating a file descriptor with protoc
+
+\<TBD\>

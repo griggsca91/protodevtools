@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
     final request = HelloRequest()..name = 'World';
 
     final response = await client.sayHello(request);
+
     return response;
   }
 }
