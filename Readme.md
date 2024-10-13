@@ -27,3 +27,10 @@ Example of a protobuf message attempting to be decoded
 Example of a protobuf message being decoded with a Buf Image
 
 ![protobuf being decoded](./docs/extension_with_protodecoded.png)
+
+## Roadmap
+
+[x] Test with ConnectRPC services
+[ ] Test with gRPC services
+[ ] Provide an appropriate UI
+[ ] Support compressed messages
