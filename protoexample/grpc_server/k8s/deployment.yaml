@@ -13,7 +13,7 @@ spec:
         app: go-server
     spec:
       containers:
-      - name: go-server
-        image: your-docker-registry/your-go-server-image:latest
-        ports:
-        - containerPort: 8080
+        - name: go-server
+          image: your-docker-registry/your-go-server-image:latest
+          ports:
+            - containerPort: 8080

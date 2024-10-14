@@ -1,258 +1,258 @@
 {
-    "file": [
+  "file": [
+    {
+      "name": "greeter.proto",
+      "package": "greeter",
+      "messageType": [
         {
-            "name": "greeter.proto",
-            "package": "greeter",
-            "messageType": [
-                {
-                    "name": "HelloRequest",
-                    "field": [
-                        {
-                            "name": "name",
-                            "number": 1,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_STRING",
-                            "jsonName": "name"
-                        }
-                    ]
-                },
-                {
-                    "name": "HelloReply",
-                    "field": [
-                        {
-                            "name": "message",
-                            "number": 1,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_STRING",
-                            "jsonName": "message"
-                        },
-                        {
-                            "name": "response",
-                            "number": 2,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_MESSAGE",
-                            "typeName": ".greeter.ComplexObjectResponse",
-                            "jsonName": "response"
-                        }
-                    ]
-                },
-                {
-                    "name": "ComplexObjectRequest"
-                },
-                {
-                    "name": "ComplexObjectResponse",
-                    "field": [
-                        {
-                            "name": "string_value",
-                            "number": 1,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_STRING",
-                            "jsonName": "stringValue"
-                        },
-                        {
-                            "name": "repeated_string_value",
-                            "number": 2,
-                            "label": "LABEL_REPEATED",
-                            "type": "TYPE_STRING",
-                            "jsonName": "repeatedStringValue"
-                        },
-                        {
-                            "name": "int_value",
-                            "number": 3,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_INT32",
-                            "jsonName": "intValue"
-                        },
-                        {
-                            "name": "bool_value",
-                            "number": 4,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_BOOL",
-                            "jsonName": "boolValue"
-                        },
-                        {
-                            "name": "optional_bool_value",
-                            "number": 5,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_BOOL",
-                            "oneofIndex": 1,
-                            "jsonName": "optionalBoolValue",
-                            "proto3Optional": true
-                        },
-                        {
-                            "name": "float_value",
-                            "number": 6,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_FLOAT",
-                            "jsonName": "floatValue"
-                        },
-                        {
-                            "name": "enum_value",
-                            "number": 7,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_ENUM",
-                            "typeName": ".greeter.ComplexObjectResponse.Corpus",
-                            "jsonName": "enumValue"
-                        },
-                        {
-                            "name": "repeated_message_value",
-                            "number": 8,
-                            "label": "LABEL_REPEATED",
-                            "type": "TYPE_MESSAGE",
-                            "typeName": ".greeter.Result",
-                            "jsonName": "repeatedMessageValue"
-                        },
-                        {
-                            "name": "name",
-                            "number": 9,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_STRING",
-                            "oneofIndex": 0,
-                            "jsonName": "name"
-                        },
-                        {
-                            "name": "sub_message",
-                            "number": 10,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_MESSAGE",
-                            "typeName": ".greeter.Result",
-                            "oneofIndex": 0,
-                            "jsonName": "subMessage"
-                        },
-                        {
-                            "name": "map_value",
-                            "number": 11,
-                            "label": "LABEL_REPEATED",
-                            "type": "TYPE_MESSAGE",
-                            "typeName": ".greeter.ComplexObjectResponse.MapValueEntry",
-                            "jsonName": "mapValue"
-                        }
-                    ],
-                    "nestedType": [
-                        {
-                            "name": "MapValueEntry",
-                            "field": [
-                                {
-                                    "name": "key",
-                                    "number": 1,
-                                    "label": "LABEL_OPTIONAL",
-                                    "type": "TYPE_STRING",
-                                    "jsonName": "key"
-                                },
-                                {
-                                    "name": "value",
-                                    "number": 2,
-                                    "label": "LABEL_OPTIONAL",
-                                    "type": "TYPE_MESSAGE",
-                                    "typeName": ".greeter.Result",
-                                    "jsonName": "value"
-                                }
-                            ],
-                            "options": {
-                                "mapEntry": true
-                            }
-                        }
-                    ],
-                    "enumType": [
-                        {
-                            "name": "Corpus",
-                            "value": [
-                                {
-                                    "name": "CORPUS_UNSPECIFIED",
-                                    "number": 0
-                                },
-                                {
-                                    "name": "CORPUS_UNIVERSAL",
-                                    "number": 1
-                                },
-                                {
-                                    "name": "CORPUS_WEB",
-                                    "number": 2
-                                },
-                                {
-                                    "name": "CORPUS_IMAGES",
-                                    "number": 3
-                                },
-                                {
-                                    "name": "CORPUS_LOCAL",
-                                    "number": 4
-                                },
-                                {
-                                    "name": "CORPUS_NEWS",
-                                    "number": 5
-                                },
-                                {
-                                    "name": "CORPUS_PRODUCTS",
-                                    "number": 6
-                                },
-                                {
-                                    "name": "CORPUS_VIDEO",
-                                    "number": 7
-                                }
-                            ]
-                        }
-                    ],
-                    "oneofDecl": [
-                        {
-                            "name": "oneof_value"
-                        },
-                        {
-                            "name": "_optional_bool_value"
-                        }
-                    ]
-                },
-                {
-                    "name": "Result",
-                    "field": [
-                        {
-                            "name": "url",
-                            "number": 1,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_STRING",
-                            "jsonName": "url"
-                        },
-                        {
-                            "name": "title",
-                            "number": 2,
-                            "label": "LABEL_OPTIONAL",
-                            "type": "TYPE_STRING",
-                            "jsonName": "title"
-                        },
-                        {
-                            "name": "snippets",
-                            "number": 3,
-                            "label": "LABEL_REPEATED",
-                            "type": "TYPE_STRING",
-                            "jsonName": "snippets"
-                        }
-                    ]
-                }
-            ],
-            "service": [
-                {
-                    "name": "Greeter",
-                    "method": [
-                        {
-                            "name": "SayHello",
-                            "inputType": ".greeter.HelloRequest",
-                            "outputType": ".greeter.HelloReply"
-                        },
-                        {
-                            "name": "SendComplexObject",
-                            "inputType": ".greeter.ComplexObjectRequest",
-                            "outputType": ".greeter.ComplexObjectResponse"
-                        }
-                    ]
-                }
-            ],
-            "options": {
-                "goPackage": "github.com/griggsca91/protodevtools/protoexample/gen/go;greetv1"
-            },
-            "syntax": "proto3",
-            "bufExtension": {
-                "isImport": false,
-                "isSyntaxUnspecified": false
+          "name": "HelloRequest",
+          "field": [
+            {
+              "name": "name",
+              "number": 1,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_STRING",
+              "jsonName": "name"
             }
+          ]
+        },
+        {
+          "name": "HelloReply",
+          "field": [
+            {
+              "name": "message",
+              "number": 1,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_STRING",
+              "jsonName": "message"
+            },
+            {
+              "name": "response",
+              "number": 2,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_MESSAGE",
+              "typeName": ".greeter.ComplexObjectResponse",
+              "jsonName": "response"
+            }
+          ]
+        },
+        {
+          "name": "ComplexObjectRequest"
+        },
+        {
+          "name": "ComplexObjectResponse",
+          "field": [
+            {
+              "name": "string_value",
+              "number": 1,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_STRING",
+              "jsonName": "stringValue"
+            },
+            {
+              "name": "repeated_string_value",
+              "number": 2,
+              "label": "LABEL_REPEATED",
+              "type": "TYPE_STRING",
+              "jsonName": "repeatedStringValue"
+            },
+            {
+              "name": "int_value",
+              "number": 3,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_INT32",
+              "jsonName": "intValue"
+            },
+            {
+              "name": "bool_value",
+              "number": 4,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_BOOL",
+              "jsonName": "boolValue"
+            },
+            {
+              "name": "optional_bool_value",
+              "number": 5,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_BOOL",
+              "oneofIndex": 1,
+              "jsonName": "optionalBoolValue",
+              "proto3Optional": true
+            },
+            {
+              "name": "float_value",
+              "number": 6,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_FLOAT",
+              "jsonName": "floatValue"
+            },
+            {
+              "name": "enum_value",
+              "number": 7,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_ENUM",
+              "typeName": ".greeter.ComplexObjectResponse.Corpus",
+              "jsonName": "enumValue"
+            },
+            {
+              "name": "repeated_message_value",
+              "number": 8,
+              "label": "LABEL_REPEATED",
+              "type": "TYPE_MESSAGE",
+              "typeName": ".greeter.Result",
+              "jsonName": "repeatedMessageValue"
+            },
+            {
+              "name": "name",
+              "number": 9,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_STRING",
+              "oneofIndex": 0,
+              "jsonName": "name"
+            },
+            {
+              "name": "sub_message",
+              "number": 10,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_MESSAGE",
+              "typeName": ".greeter.Result",
+              "oneofIndex": 0,
+              "jsonName": "subMessage"
+            },
+            {
+              "name": "map_value",
+              "number": 11,
+              "label": "LABEL_REPEATED",
+              "type": "TYPE_MESSAGE",
+              "typeName": ".greeter.ComplexObjectResponse.MapValueEntry",
+              "jsonName": "mapValue"
+            }
+          ],
+          "nestedType": [
+            {
+              "name": "MapValueEntry",
+              "field": [
+                {
+                  "name": "key",
+                  "number": 1,
+                  "label": "LABEL_OPTIONAL",
+                  "type": "TYPE_STRING",
+                  "jsonName": "key"
+                },
+                {
+                  "name": "value",
+                  "number": 2,
+                  "label": "LABEL_OPTIONAL",
+                  "type": "TYPE_MESSAGE",
+                  "typeName": ".greeter.Result",
+                  "jsonName": "value"
+                }
+              ],
+              "options": {
+                "mapEntry": true
+              }
+            }
+          ],
+          "enumType": [
+            {
+              "name": "Corpus",
+              "value": [
+                {
+                  "name": "CORPUS_UNSPECIFIED",
+                  "number": 0
+                },
+                {
+                  "name": "CORPUS_UNIVERSAL",
+                  "number": 1
+                },
+                {
+                  "name": "CORPUS_WEB",
+                  "number": 2
+                },
+                {
+                  "name": "CORPUS_IMAGES",
+                  "number": 3
+                },
+                {
+                  "name": "CORPUS_LOCAL",
+                  "number": 4
+                },
+                {
+                  "name": "CORPUS_NEWS",
+                  "number": 5
+                },
+                {
+                  "name": "CORPUS_PRODUCTS",
+                  "number": 6
+                },
+                {
+                  "name": "CORPUS_VIDEO",
+                  "number": 7
+                }
+              ]
+            }
+          ],
+          "oneofDecl": [
+            {
+              "name": "oneof_value"
+            },
+            {
+              "name": "_optional_bool_value"
+            }
+          ]
+        },
+        {
+          "name": "Result",
+          "field": [
+            {
+              "name": "url",
+              "number": 1,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_STRING",
+              "jsonName": "url"
+            },
+            {
+              "name": "title",
+              "number": 2,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_STRING",
+              "jsonName": "title"
+            },
+            {
+              "name": "snippets",
+              "number": 3,
+              "label": "LABEL_REPEATED",
+              "type": "TYPE_STRING",
+              "jsonName": "snippets"
+            }
+          ]
         }
-    ]
+      ],
+      "service": [
+        {
+          "name": "Greeter",
+          "method": [
+            {
+              "name": "SayHello",
+              "inputType": ".greeter.HelloRequest",
+              "outputType": ".greeter.HelloReply"
+            },
+            {
+              "name": "SendComplexObject",
+              "inputType": ".greeter.ComplexObjectRequest",
+              "outputType": ".greeter.ComplexObjectResponse"
+            }
+          ]
+        }
+      ],
+      "options": {
+        "goPackage": "github.com/griggsca91/protodevtools/protoexample/gen/go;greetv1"
+      },
+      "syntax": "proto3",
+      "bufExtension": {
+        "isImport": false,
+        "isSyntaxUnspecified": false
+      }
+    }
+  ]
 }

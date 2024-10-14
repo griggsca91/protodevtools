@@ -3,9 +3,6 @@
   "name": "My Chrome Extension with Vite",
   "version": "1.0",
   "description": "A Chrome extension built with Vite.",
-  "permissions": [
-    "scripting", "activeTab",
-    "webRequest"
-  ],
-    "devtools_page":"devtools_page.html" 
+  "permissions": ["scripting", "activeTab", "webRequest"],
+  "devtools_page": "devtools_page.html"
 }

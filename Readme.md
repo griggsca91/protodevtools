@@ -10,13 +10,13 @@ If you provide a [Buf Image](https://buf.build/docs/reference/images) then it ca
 
 ## Install
 
-* Go to your `chrome://extensions/` in your browser
-* Click `Load Unpacked`
-* Point to the `./dist` folder in the root directory of the project
-* Go to a website that sends protobuf messages
-* Open your `Developer Tools`
-* Look for a tab called `Protobuf Decoder`
-* (Optional) if you have a Buf Image, drag and drop it in the panel and it should begin to parse messages automatically
+- Go to your `chrome://extensions/` in your browser
+- Click `Load Unpacked`
+- Point to the `./dist` folder in the root directory of the project
+- Go to a website that sends protobuf messages
+- Open your `Developer Tools`
+- Look for a tab called `Protobuf Decoder`
+- (Optional) if you have a Buf Image, drag and drop it in the panel and it should begin to parse messages automatically
 
 ## Screenshots
 

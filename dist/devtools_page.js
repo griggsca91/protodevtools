@@ -1,1 +1,1 @@
-chrome.devtools.panels.create("Protobuf Decoder", null, 'index.html');
+chrome.devtools.panels.create("Protobuf Decoder", null, "index.html");

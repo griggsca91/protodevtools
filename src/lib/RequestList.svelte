@@ -2,9 +2,11 @@
   const {
     requests,
     onRequestSelected,
+    selectedRequestIndex,
   }: {
     requests: { url: string; requestTime: Date }[];
     onRequestSelected: (index: number) => void;
+    selectedRequestIndex: number | null;
   } = $props();
 </script>
 
@@ -28,6 +30,8 @@
         <tbody class="bg-white divide-y divide-gray-200">
           {#each requests as r, i}
             <tr
+              class:bg-blue-100={selectedRequestIndex == i}
+              class="cursor-pointer hover:bg-gray-50"
               onclick={() => {
                 onRequestSelected(i);
               }}
