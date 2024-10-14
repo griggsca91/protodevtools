@@ -2,13 +2,12 @@
   import "./app.css";
   import requests, { type Request } from "./lib/requests.svelte";
   import fileRegistry from "./lib/fileRegistry.svelte";
-  import { JsonView } from "@zerodevx/svelte-json-view";
   import Panel from "./lib/Panel.svelte";
   import DropZone from "./lib/DropZone.svelte";
 
-  import type { ChangeEventHandler, DragEventHandler } from "svelte/elements";
   import RequestList from "./lib/RequestList.svelte";
-  let selectedRequest: Request | null = $state(null);
+  let selectedRequestIndex: number | null = $state(null);
+  let selectedRequest: Request | null = $derived(requests.requests[selectedRequestIndex ?? -1] ?? null)
   function setActiveRegistry(e: Event) {
     e.preventDefault();
     fileRegistry.setActiveFileRegistry((e.target as HTMLSelectElement).value);
@@ -30,11 +29,12 @@
 <DropZone fileDropped={fileDropped}>
   <RequestList
     requests={requests.requests}
-    onRequestSelected={(i) => (selectedRequest = requests.requests[i])}
+    onRequestSelected={(i) => selectedRequestIndex = i}
+    selectedRequestIndex={selectedRequestIndex}
   />
 </DropZone>
 <Panel
-  closePanel={() => (selectedRequest = null)}
+  closePanel={() => (selectedRequestIndex = null)}
   request={selectedRequest}
   isOpen={selectedRequest != null}
 />
