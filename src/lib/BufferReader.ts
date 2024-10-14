@@ -1,7 +1,5 @@
 import JSBI from "jsbi";
 
-
-
 export class BufferReader {
   constructor(buffer) {
     this.buffer = buffer;
@@ -48,9 +46,9 @@ export class BufferReader {
     if (length > bytesAvailable) {
       throw new Error(
         "Not enough bytes left. Requested: " +
-        length +
-        " left: " +
-        bytesAvailable
+          length +
+          " left: " +
+          bytesAvailable,
       );
     }
   }
@@ -63,7 +61,6 @@ export class BufferReader {
     this.offset = this.savedOffset;
   }
 }
-
 
 export function decodeVarint(buffer, offset) {
   let res = JSBI.BigInt(0);
@@ -85,7 +82,6 @@ export function decodeVarint(buffer, offset) {
 
   return {
     value: res,
-    length: shift / 7
+    length: shift / 7,
   };
 }
-

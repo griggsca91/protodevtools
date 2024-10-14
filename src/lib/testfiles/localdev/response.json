@@ -23,46 +23,31 @@
         "$typeName": "greeter.Result",
         "url": "url",
         "title": "title",
-        "snippets": [
-          "snippet 1",
-          "snippet 2"
-        ]
+        "snippets": ["snippet 1", "snippet 2"]
       },
       {
         "$typeName": "greeter.Result",
         "url": "url",
         "title": "title",
-        "snippets": [
-          "snippet 1",
-          "snippet 2"
-        ]
+        "snippets": ["snippet 1", "snippet 2"]
       },
       {
         "$typeName": "greeter.Result",
         "url": "url",
         "title": "title",
-        "snippets": [
-          "snippet 1",
-          "snippet 2"
-        ]
+        "snippets": ["snippet 1", "snippet 2"]
       },
       {
         "$typeName": "greeter.Result",
         "url": "url",
         "title": "title",
-        "snippets": [
-          "snippet 1",
-          "snippet 2"
-        ]
+        "snippets": ["snippet 1", "snippet 2"]
       },
       {
         "$typeName": "greeter.Result",
         "url": "url",
         "title": "title",
-        "snippets": [
-          "snippet 1",
-          "snippet 2"
-        ]
+        "snippets": ["snippet 1", "snippet 2"]
       }
     ],
     "oneofValue": {
@@ -71,10 +56,7 @@
         "$typeName": "greeter.Result",
         "url": "url",
         "title": "title",
-        "snippets": [
-          "snippet 1",
-          "snippet 2"
-        ]
+        "snippets": ["snippet 1", "snippet 2"]
       }
     },
     "mapValue": {
@@ -82,10 +64,7 @@
         "$typeName": "greeter.Result",
         "url": "url",
         "title": "title",
-        "snippets": [
-          "snippet 1",
-          "snippet 2"
-        ]
+        "snippets": ["snippet 1", "snippet 2"]
       }
     },
     "optionalBoolValue": true

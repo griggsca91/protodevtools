@@ -1,56 +1,52 @@
-import { Buffer } from 'buffer'
+import { Buffer } from "buffer";
 import JSBI from "jsbi";
 import { BufferReader } from "./BufferReader"; // Adjust the path as necessary
 import { base64Decode } from "@bufbuild/protobuf/wire";
-import { humanizeResponse, humanizeRequest } from './BufImage';
-import fileRegistry from "./fileRegistry.svelte"
-import requestJSON from "./testfiles/localdev/request.json"
-import responseJSON from "./testfiles/localdev/response.json"
+import { humanizeResponse, humanizeRequest } from "./BufImage";
+import fileRegistry from "./fileRegistry.svelte";
+import requestJSON from "./testfiles/localdev/request.json";
+import responseJSON from "./testfiles/localdev/response.json";
 
 function recurse(obj: any, parsedData: any) {
   for (let p of parsedData.parts) {
     switch (p.type) {
       case 0:
-        obj[p.index] = decodeVarintParts(p.value)
+        obj[p.index] = decodeVarintParts(p.value);
         break;
       case 1:
-        obj[p.index] = decodeFixed64(p.value)
+        obj[p.index] = decodeFixed64(p.value);
         break;
       case 2:
-        let decoded = decodeProto(p.value)
+        let decoded = decodeProto(p.value);
         if (p.value.length > 0 && decoded.leftOver.length === 0) {
-          obj[p.index] = {}
-          recurse(obj[p.index], decoded)
+          obj[p.index] = {};
+          recurse(obj[p.index], decoded);
         } else {
           obj[p.index] = decodeStringOrBytes(p.value);
         }
-        break
+        break;
       case 5:
-        obj[p.index] = decodeFixed32(p.value)
-        break
-
+        obj[p.index] = decodeFixed32(p.value);
+        break;
     }
   }
 
   if (parsedData.leftOver.length > 0) {
-    const p = decodeProto(parsedData.leftOver)
+    const p = decodeProto(parsedData.leftOver);
     if (p.parts.length > 0) {
-      recurse(obj, p)
+      recurse(obj, p);
     }
   }
-  return obj
-
+  return obj;
 }
-
 
 function decodeProto(buffer: any) {
   const TYPES = {
     VARINT: 0,
     FIXED64: 1,
     LENDELIM: 2,
-    FIXED32: 5
+    FIXED32: 5,
   };
-
 
   const reader = new BufferReader(buffer) as any;
   const parts = [];
@@ -85,17 +81,17 @@ function decodeProto(buffer: any) {
         byteRange,
         index,
         type,
-        value
+        value,
       });
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     reader.resetToCheckpoint();
   }
 
   return {
     parts,
-    leftOver: reader.readBuffer(reader.leftBytes())
+    leftOver: reader.readBuffer(reader.leftBytes()),
   };
 }
 
@@ -130,7 +126,6 @@ export function decodeVarintParts(value: any) {
 
   return result;
 }
-
 
 export function decodeFixed32(value: any) {
   const floatValue = value.readFloatLE(0);
@@ -181,7 +176,6 @@ export function bufferLeToBeHex(buffer: any) {
   return output;
 }
 
-
 export function interpretAsSignedType(n: any) {
   // see https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/wire_format_lite.h#L857-L876
   // however, this is a simpler equivalent formula
@@ -191,7 +185,7 @@ export function interpretAsSignedType(n: any) {
   } else {
     return JSBI.multiply(
       JSBI.BigInt(-1),
-      JSBI.divide(JSBI.add(n, JSBI.BigInt(1)), JSBI.BigInt(2))
+      JSBI.divide(JSBI.add(n, JSBI.BigInt(1)), JSBI.BigInt(2)),
     );
   }
 }
@@ -199,7 +193,7 @@ export function interpretAsSignedType(n: any) {
 export function interpretAsTwosComplement(n: any, bits: any) {
   const isTwosComplement = JSBI.equal(
     JSBI.signedRightShift(n, JSBI.BigInt(bits - 1)),
-    JSBI.BigInt(1)
+    JSBI.BigInt(1),
   );
   if (isTwosComplement) {
     return JSBI.subtract(n, JSBI.leftShift(JSBI.BigInt(1), JSBI.BigInt(bits)));
@@ -211,30 +205,33 @@ export function interpretAsTwosComplement(n: any, bits: any) {
 let requests: Request[] = $state([]);
 
 function base64Encode(input: string): string {
-  return Buffer.from(input).toString('base64');
+  return Buffer.from(input).toString("base64");
 }
 
 if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
   chrome.devtools.network.onRequestFinished.addListener((request: any) => {
-    console.log("request", request)
+    console.log("request", request);
     if (request.request.method != "POST") {
-      return
+      return;
     }
 
-    let data: any
+    let data: any;
     const rawData = base64Encode(request.request.postData.text);
-    const text = request.request.postData.text
+    const text = request.request.postData.text;
     if (fileRegistry.activeFileRegistry) {
-      const buffer = Buffer.from(text)
-      data = humanizeRequest(fileRegistry.activeFileRegistry.fileRegistry, buffer, request.request.url)
+      const buffer = Buffer.from(text);
+      data = humanizeRequest(
+        fileRegistry.activeFileRegistry.fileRegistry,
+        buffer,
+        request.request.url,
+      );
     } else {
-      console.log(request.url, request)
-      console.log("reqeust base64 encoded text", rawData)
+      console.log(request.url, request);
+      console.log("reqeust base64 encoded text", rawData);
       const reader = Buffer.from(request.request.postData.text);
-      console.log(reader.buffer)
-      data = recurse({}, decodeProto(reader))
-      console.log("request parsed response", data)
-
+      console.log(reader.buffer);
+      data = recurse({}, decodeProto(reader));
+      console.log("request parsed response", data);
     }
     let r: Request = {
       requestTime: new Date(),
@@ -242,27 +239,30 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
       rawData,
       text,
       url: request.request.url,
-      method: 'POST',
-    }
+      method: "POST",
+    };
     request.getContent((body: any) => {
-      console.log("response body", body, r.url)
+      console.log("response body", body, r.url);
       if (fileRegistry.activeFileRegistry) {
-
-        const b = Buffer.from(base64Decode(body))
+        const b = Buffer.from(base64Decode(body));
         r.response = {
           rawData: body,
-          data: humanizeResponse(fileRegistry.activeFileRegistry.fileRegistry, b, r.url)
-        }
+          data: humanizeResponse(
+            fileRegistry.activeFileRegistry.fileRegistry,
+            b,
+            r.url,
+          ),
+        };
       } else {
-        const parsedResponse = decodeProto(Buffer.from(body, "base64"))
-        const recursed = recurse({}, parsedResponse)
+        const parsedResponse = decodeProto(Buffer.from(body, "base64"));
+        const recursed = recurse({}, parsedResponse);
         console.dir(recursed, { depth: null });
         r.response = {
           data: recursed,
-          rawData: body
-        }
+          rawData: body,
+        };
       }
-      requests.push(r)
+      requests.push(r);
     });
   });
 } else {
@@ -271,35 +271,36 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
   requests.push({
     requestTime: new Date(),
     data: requestJSON,
-    text: '',
-    url: 'http://localhost:8080/greeter.Greeter/SayHello',
-    method: 'POST',
+    text: "",
+    url: "http://localhost:8080/greeter.Greeter/SayHello",
+    method: "POST",
     response: {
       data: responseJSON,
-      rawData: ''
-    }
-  })
+      rawData: "",
+    },
+  });
 }
 
 type Response = {
-  data: any
-  rawData: any
-}
-
+  data: any;
+  rawData: any;
+};
 
 export type Request = {
-  requestTime: Date
-  data: any
-  rawData?: any
-  text: string
-  url: string
-  method: "POST" | "GET"
-  response?: Response
-}
+  requestTime: Date;
+  data: any;
+  rawData?: any;
+  text: string;
+  url: string;
+  method: "POST" | "GET";
+  response?: Response;
+};
 
 export default {
-  get requests() { return requests },
-  addRequest(r: Request) {
-    requests.push(r)
+  get requests() {
+    return requests;
   },
-}
+  addRequest(r: Request) {
+    requests.push(r);
+  },
+};

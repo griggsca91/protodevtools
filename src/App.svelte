@@ -7,7 +7,9 @@
 
   import RequestList from "./lib/RequestList.svelte";
   let selectedRequestIndex: number | null = $state(null);
-  let selectedRequest: Request | null = $derived(requests.requests[selectedRequestIndex ?? -1] ?? null)
+  let selectedRequest: Request | null = $derived(
+    requests.requests[selectedRequestIndex ?? -1] ?? null,
+  );
   function setActiveRegistry(e: Event) {
     e.preventDefault();
     fileRegistry.setActiveFileRegistry((e.target as HTMLSelectElement).value);
@@ -26,11 +28,11 @@
     >
   {/each}
 </select>
-<DropZone fileDropped={fileDropped}>
+<DropZone {fileDropped}>
   <RequestList
     requests={requests.requests}
-    onRequestSelected={(i) => selectedRequestIndex = i}
-    selectedRequestIndex={selectedRequestIndex}
+    onRequestSelected={(i) => (selectedRequestIndex = i)}
+    {selectedRequestIndex}
   />
 </DropZone>
 <Panel

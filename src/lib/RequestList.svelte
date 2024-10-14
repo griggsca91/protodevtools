@@ -8,8 +8,6 @@
     onRequestSelected: (index: number) => void;
     selectedRequestIndex: number | null;
   } = $props();
-
-
 </script>
 
 <div class="container m-2 p-2 h-screen">
@@ -32,8 +30,8 @@
         <tbody class="bg-white divide-y divide-gray-200">
           {#each requests as r, i}
             <tr
-            class:bg-blue-100={selectedRequestIndex == i}
-            class="cursor-pointer hover:bg-gray-50"
+              class:bg-blue-100={selectedRequestIndex == i}
+              class="cursor-pointer hover:bg-gray-50"
               onclick={() => {
                 onRequestSelected(i);
               }}

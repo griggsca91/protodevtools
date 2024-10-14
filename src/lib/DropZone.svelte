@@ -1,10 +1,13 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+  import type { Snippet } from "svelte";
 
-    const { fileDropped, children  }: {
-      fileDropped: (fileName: string, data: ArrayBuffer) => void;
-		children: Snippet;
-	} = $props()
+  const {
+    fileDropped,
+    children,
+  }: {
+    fileDropped: (fileName: string, data: ArrayBuffer) => void;
+    children: Snippet;
+  } = $props();
 
   async function onDrop(ev: DragEvent) {
     console.log("ondrop", ev.dataTransfer?.items);
@@ -32,12 +35,12 @@
             console.log("contents null", contents);
             return;
           }
-          fileDropped(file.name, contents)
-        //   fileRegistry.addFileRegistryFromBinary(
-        //     file.name,
-        //     new Uint8Array(coneternts),
-        //   );
-        //   console.log(`… file[${i}].name = ${file?.name}`);
+          fileDropped(file.name, contents);
+          //   fileRegistry.addFileRegistryFromBinary(
+          //     file.name,
+          //     new Uint8Array(coneternts),
+          //   );
+          //   console.log(`… file[${i}].name = ${file?.name}`);
         }
       });
     } else {
@@ -72,5 +75,5 @@
   ondragover={onDragStart}
   ondrop={onDrop}
 >
-{@render children()}
+  {@render children()}
 </div>
