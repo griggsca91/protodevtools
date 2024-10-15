@@ -215,23 +215,27 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
       return;
     }
 
-    let data: any;
+    let data: any = {};
     const rawData = base64Encode(request.request.postData.text);
     const text = request.request.postData.text;
-    if (fileRegistry.activeFileRegistry) {
-      const buffer = Buffer.from(text);
-      data = humanizeRequest(
-        fileRegistry.activeFileRegistry.fileRegistry,
-        buffer,
-        request.request.url,
-      );
-    } else {
-      console.log(request.url, request);
-      console.log("reqeust base64 encoded text", rawData);
-      const reader = Buffer.from(request.request.postData.text);
-      console.log(reader.buffer);
-      data = recurse({}, decodeProto(reader));
-      console.log("request parsed response", data);
+    try {
+      if (fileRegistry.activeFileRegistry) {
+        const buffer = Buffer.from(text);
+        data = humanizeRequest(
+          fileRegistry.activeFileRegistry.fileRegistry,
+          buffer,
+          request.request.url,
+        );
+      } else {
+        console.log(request.url, request);
+        console.log("reqeust base64 encoded text", rawData);
+        const reader = Buffer.from(request.request.postData.text);
+        console.log(reader.buffer);
+        data = recurse({}, decodeProto(reader));
+        console.log("request parsed response", data);
+      }
+    } catch (e) {
+      console.log("error decoding proto", e)
     }
     let r: Request = {
       requestTime: new Date(),
@@ -243,24 +247,28 @@ if (chrome?.devtools?.network?.onRequestFinished?.addListener) {
     };
     request.getContent((body: any) => {
       console.log("response body", body, r.url);
-      if (fileRegistry.activeFileRegistry) {
-        const b = Buffer.from(base64Decode(body));
-        r.response = {
-          rawData: body,
-          data: humanizeResponse(
-            fileRegistry.activeFileRegistry.fileRegistry,
-            b,
-            r.url,
-          ),
-        };
-      } else {
-        const parsedResponse = decodeProto(Buffer.from(body, "base64"));
-        const recursed = recurse({}, parsedResponse);
-        console.dir(recursed, { depth: null });
-        r.response = {
-          data: recursed,
-          rawData: body,
-        };
+      try {
+        if (fileRegistry.activeFileRegistry) {
+          const b = Buffer.from(base64Decode(body));
+          r.response = {
+            rawData: body,
+            data: humanizeResponse(
+              fileRegistry.activeFileRegistry.fileRegistry,
+              b,
+              r.url,
+            ),
+          };
+        } else {
+          const parsedResponse = decodeProto(Buffer.from(body, "base64"));
+          const recursed = recurse({}, parsedResponse);
+          console.dir(recursed, { depth: null });
+          r.response = {
+            data: recursed,
+            rawData: body,
+          };
+        }
+      } catch (e) {
+        console.log("error decoding response", e)
       }
       requests.push(r);
     });
