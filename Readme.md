@@ -38,6 +38,10 @@ Example of a protobuf message being decoded with a Buf Image
 [ ] Add proper testing
 [ ] Support errors returned - <https://connectrpc.com/docs/go/errors#error-details>
 
+## ChangeLog
+
+[ChangeLog Format](https://common-changelog.org/)
+
 ## Tips
 
 ### Creating a Buf Image
