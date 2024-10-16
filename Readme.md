@@ -30,13 +30,13 @@ Example of a protobuf message being decoded with a Buf Image
 
 ## Roadmap
 
-[x] Test with ConnectRPC services
-[ ] Test with gRPC services
-[ ] Provide an appropriate UI
-[ ] Support compressed messages
-[ ] Upload to chrome store
-[ ] Add proper testing
-[ ] Support errors returned - <https://connectrpc.com/docs/go/errors#error-details>
+- [x] Test with ConnectRPC services
+- [ ] Provide a better UI
+- [ ] Support compressed messages
+- [ ] Upload to chrome store
+- [ ] Add proper testing
+- [ ] Support errors returned - <https://connectrpc.com/docs/go/errors#error-details>
+- [ ] Display timestamps in a readable format
 
 ## ChangeLog
 
